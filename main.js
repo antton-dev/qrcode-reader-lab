@@ -5,22 +5,23 @@ function onScanSuccess(decodedText, decodedResult) {
     // Handle on success condition with the decoded text or result.
     setTimeout(() => {
         html5QrcodeScanner.clear();
-    }, 1000);
     
-    let result = document.querySelector('#result')
-    console.log(decodedResult);
+    
+        let result = document.querySelector('#result')
+        console.log(decodedResult);
 
-    fetch("https://www.googleapis.com/books/v1/volumes?q=" + decodedText + "+isbn&maxResults=1")
-    // fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + decodedText + "&key=AIzaSyDpS7bVi263xStL7x0dlAN_Hr7iToQZsH8")
-    .then(res => res.json())
-    .then(data => {
-        console.log(data.items);
-        data.items.forEach(item => {
-            console.log(item.volumeInfo.title, item.volumeInfo.imageLinks.smallThumbnail)
-            result.insertAdjacentHTML('beforeend', "<img src='" + item.volumeInfo.imageLinks.smallThumbnail + "'alt='cover'><br>" + item.volumeInfo.title + ' - ' + item.volumeInfo.authors + '<br>')
+        fetch("https://www.googleapis.com/books/v1/volumes?q=" + decodedText + "+isbn&maxResults=1")
+        // fetch("https://www.googleapis.com/books/v1/volumes?q=isbn:" + decodedText + "&key=AIzaSyDpS7bVi263xStL7x0dlAN_Hr7iToQZsH8")
+        .then(res => res.json())
+        .then(data => {
+            console.log(data.items);
+            data.items.forEach(item => {
+                console.log(item.volumeInfo.title, item.volumeInfo.imageLinks.smallThumbnail)
+                result.insertAdjacentHTML('beforeend', "<img src='" + item.volumeInfo.imageLinks.smallThumbnail + "'alt='cover'><br>" + item.volumeInfo.title + ' - ' + item.volumeInfo.authors + '<br>')
 
-        });
-    })
+            });
+        })
+    }, 1000);
 }
 
 html5QrcodeScanner.render(onScanSuccess);
